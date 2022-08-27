@@ -150,7 +150,7 @@ namespace AwesomePooling
 
         #endregion
 
-        public class PoolingHandler<T> where T : MonoBehaviour, IPoolable
+        private class PoolingHandler<T> where T : MonoBehaviour, IPoolable
         {
             public static Dictionary<Type, List<T>> PooledObjects = new Dictionary<Type, List<T>>();
             public static Dictionary<Type, T> PooledObjectPrefabs = new Dictionary<Type, T>();
