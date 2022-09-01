@@ -57,6 +57,7 @@ namespace AwesomePooling
                     {
                         obj.gameObject.SetActive(true);
                         obj.IsInUse = true;
+                        obj.OnSelected();
                         return obj;
                     }
                 }
@@ -66,11 +67,17 @@ namespace AwesomePooling
                     Transform poolParent = GetPoolTransform<T>();
                     var obj = Instantiate(PoolingHandler<T>.PooledObjectPrefabs[typeof(T)], poolParent);
                     obj.IsInUse = true;
+                    obj.OnSelected();
                     PoolingHandler<T>.PooledObjects[typeof(T)].Add(obj);
                     return obj;
                 }
 
-                return PoolingHandler<T>.PooledObjects[typeof(T)][0];
+
+                var firstObject = PoolingHandler<T>.PooledObjects[typeof(T)][0];
+                firstObject.IsInUse = true;
+                firstObject.OnSelected();
+                return firstObject;
+
             }
 
             throw new Exception(typeof(T).ToString() + " couldn't found in the pool");
@@ -85,6 +92,7 @@ namespace AwesomePooling
                 poolableGameObject.transform.parent = poolParent;
                 poolableGameObject.gameObject.SetActive(false);
                 poolableGameObject.IsInUse = false;
+                poolableGameObject.OnPooled();
             }
             else
             {
@@ -103,6 +111,7 @@ namespace AwesomePooling
                     obj.transform.parent = poolParent;
                     obj.gameObject.SetActive(false);
                     obj.IsInUse = false;
+                    obj.OnPooled();
                 }
             }
             else
@@ -139,6 +148,7 @@ namespace AwesomePooling
 
                 PoolingHandler<T>.PooledObjects[typeof(T)].Add(obj);
             }
+            poolableGameObject.OnPooled();
         }
 
 
